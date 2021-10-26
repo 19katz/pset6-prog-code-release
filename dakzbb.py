@@ -51,7 +51,14 @@ class Dakzbb:
         """
         # TODO: Fill this in
         utilities = []   # Change this
+        prev_round = history.round(t-1)
+        clicks = prev_round.clicks
 
+        info = self.slot_info(t, history, reserve)
+
+        for i in range(len(info)):
+            min_bid = info[i][1]
+            utilities.append(clicks[i] * (self.value - min_bid))
         
         return utilities
 
@@ -79,10 +86,18 @@ class Dakzbb:
         # If s*_j is the top slot, bid the value v_j
 
         prev_round = history.round(t-1)
-        (slot, min_bid, max_bid) = self.target_slot(t, history, reserve)
 
         # TODO: Fill this in.
-        bid = 0  # change this
+        prev_bids = prev_round.bids
+        
+        (slot, min_bid, max_bid) = self.target_slot(t, history, reserve)
+        clicks = prev_round.clicks
+        bid = 0
+
+        if slot == 0 or min_bid >= self.value:
+            bid = self.value
+        else:
+            bid = self.value - clicks[slot] * (self.value - min_bid) / clicks[slot - 1]
         
         return bid
 
