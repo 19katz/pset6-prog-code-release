@@ -50,13 +50,15 @@ class VCG:
             """
             c = slot_clicks 
             n = len(allocation)
+            
+            bid_val = [x[1] for x in bids]
+            bid_val.sort(reverse=True)
 
             p_list = []
             for i in range(n):
-                bidder = allocation[i]
-                val = bids[bidder][1]
+                val = bid_val[i+1]
                 if i == n-1:
-                    p = c[i]*val
+                    p = c[i]*max(val, reserve)
                 else:
                     p = (c[i] - c[i+1])*val
                 p_list.append(p)
