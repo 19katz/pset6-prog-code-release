@@ -13,8 +13,7 @@ class Dakzbudget:
         self.budget = budget
 
     def initial_bid(self, reserve):
-        #return self.value / 2
-        return 0
+        return self.value / 2
 
 
     def slot_info(self, t, history, reserve):
@@ -99,8 +98,13 @@ class Dakzbudget:
         if min_bid > self.value or slot == 0:
             bid = self.value
         else:
-            bid = self.value - clicks[slot] * (self.value - min_bid) / clicks[slot - 1]
-        
+            bid = self.value - clicks[slot] * (self.value - min_bid ) / clicks[slot - 1]
+
+        if t >= 16 and t <= 28:
+            bid = reserve + 1
+        elif t > 36:
+            bid = self.value
+
         return bid
 
     def __repr__(self):
