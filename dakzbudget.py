@@ -100,8 +100,10 @@ class Dakzbudget:
         else:
             bid = self.value - clicks[slot] * (self.value - min_bid ) / clicks[slot - 1]
 
-        if t >= 16 and t <= 28:
+        # bid a little higher than the reserve to conserve spending
+        if t >= 20 and t <= 28:
             bid = reserve + 1
+        # bid high when clicks are high!
         elif t > 36:
             bid = self.value
 
