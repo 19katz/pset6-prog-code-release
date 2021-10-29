@@ -48,9 +48,25 @@ class VCG:
             """
             Total payment for a bidder in slot k.
             """
-            c = slot_clicks
+            c = slot_clicks 
             n = len(allocation)
+            
+            bid_val = [x[1] for x in bids]
+            bid_val.sort(reverse=True)
 
+            p_list = []
+            for i in range(n):
+                val = bid_val[i+1]
+                if i == n-1:
+                    p = c[i]*max(val, reserve)
+                else:
+                    p = (c[i] - c[i+1])*val
+                p_list.append(p)
+
+            payment = sum(p_list[k:n])
+
+            return payment
+                
             # TODO: Compute the payment and return it.
 
         def norm(totals):
@@ -72,3 +88,4 @@ class VCG:
         """
         # Conveniently enough, bid ranges are the same for GSP and VCG:
         return GSP.bid_range_for_slot(slot, slot_clicks, reserve, bids)
+
